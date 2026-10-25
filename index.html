@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f766e">
+<title>Jodhpur Local — Business Directory</title>
+<style>
+:root{--green:#0f766e;--dark:#12312e;--muted:#64748b;--bg:#f5f8f7;--line:#dce7e4}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#142522}
+header{background:linear-gradient(135deg,#0f766e,#134e4a);color:white;padding:24px 16px 30px}
+.wrap{max-width:1000px;margin:auto}.brand{font-size:13px;letter-spacing:1.6px;font-weight:800;opacity:.9}.hero h1{font-size:clamp(28px,6vw,44px);line-height:1.12;margin:12px 0}.hero p{margin:0 0 18px;color:#d9f4ee}
+.search{display:grid;grid-template-columns:1fr;gap:9px}.search input,.search select,.field input,.field textarea,.field select{width:100%;padding:13px;border:1px solid var(--line);border-radius:11px;font:inherit;background:white;color:#142522}
+button,.btn{border:0;border-radius:10px;padding:12px 15px;font:inherit;font-weight:750;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+.primary{background:#fbbf24;color:#382700}.green{background:var(--green);color:white}.plain{background:#e5f3f0;color:#115e59}.danger{background:#fee2e2;color:#991b1b}
+main{padding:20px 14px 50px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.section-title h2{font-size:22px;margin:8px 0 14px}
+.categories{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 22px}.chip{border:1px solid var(--line);border-radius:999px;background:white;padding:8px 12px;cursor:pointer}.chip.active{background:#ccfbf1;border-color:#0f766e;color:#115e59;font-weight:800}
+.cards{display:grid;grid-template-columns:1fr;gap:13px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 4px 14px #143b3010}.card h3{margin:0 0 6px;font-size:19px}.tag{font-size:12px;background:#e0f2fe;color:#075985;padding:4px 8px;border-radius:999px;display:inline-block}.muted{color:var(--muted);font-size:14px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.empty{background:white;border:1px dashed #b8cbc6;border-radius:14px;padding:24px;text-align:center;color:var(--muted)}
+.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:16px;margin:24px 0}.panel h2{margin:0 0 12px}.field{margin:10px 0}.field label{display:block;font-size:14px;font-weight:700;margin-bottom:5px}.field textarea{min-height:76px}.two{display:grid;grid-template-columns:1fr;gap:10px}.note{background:#fff7d6;border:1px solid #f4d77a;border-radius:12px;padding:12px;font-size:13px;color:#624a00}
+footer{text-align:center;padding:24px;color:var(--muted);font-size:13px}
+.hidden{display:none!important}
+@media(min-width:650px){.search{grid-template-columns:1.4fr .8fr auto}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap hero">
+  <div class="brand">JODHPUR LOCAL</div>
+  <h1>जोधपुर में सही बिजनेस<br>आसानी से खोजें</h1>
+  <p>लोकल सर्विस, दुकानें और प्रोफेशनल्स — एक ही जगह।</p>
+  <div class="search">
+    <input id="searchInput" placeholder="क्या खोज रहे हैं? जैसे salon, doctor..." aria-label="बिजनेस खोजें">
+    <select id="categoryFilter" aria-label="कैटेगरी चुनें"><option value="">सभी कैटेगरी</option></select>
+    <button class="primary" id="searchBtn">बिजनेस खोजें</button>
+  </div>
+</div></header>
+<main class="wrap">
+  <div class="categories" id="chips"></div>
+  <div class="section-title"><h2>जोधपुर के बिजनेस</h2><span id="count" class="muted"></span></div>
+  <div id="businessCards" class="cards"></div>
+  <section class="panel" id="addBusiness">
+    <h2>अपना बिजनेस जोड़ें</h2>
+    <p class="muted">जानकारी भेजें। इस शुरुआती डेमो में लिस्टिंग एडमिन की मंजूरी के बाद दिखेगी।</p>
+    <form id="businessForm">
+      <div class="two">
+        <div class="field"><label for="name">बिजनेस का नाम *</label><input id="name" required maxlength="90" placeholder="जैसे Sharma Salon"></div>
+        <div class="field"><label for="category">कैटेगरी *</label><select id="category" required><option value="">चुनें</option></select></div>
+      </div>
+      <div class="two">
+        <div class="field"><label for="area">इलाका / पता *</label><input id="area" required maxlength="140" placeholder="जैसे Ratanada, Jodhpur"></div>
+        <div class="field"><label for="phone">मोबाइल नंबर *</label><input id="phone" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10 अंकों का नंबर"></div>
+      </div>
+      <div class="field"><label for="description">बिजनेस के बारे में</label><textarea id="description" maxlength="400" placeholder="आप कौन-सी सर्विस देते हैं?"></textarea></div>
+      <button class="green" type="submit">लिस्टिंग सबमिट करें</button>
+      <p id="formMessage" class="muted" aria-live="polite"></p>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>Admin Panel — डेमो</h2>
+    <p class="muted">सिर्फ इस ब्राउज़र में टेस्ट करने के लिए। डेमो PIN: <strong>2468</strong></p>
+    <div id="adminLogin">
+      <div class="field"><label for="adminPin">Admin PIN</label><input id="adminPin" inputmode="numeric" type="password" placeholder="Demo PIN"></div>
+      <button class="green" id="loginBtn">Admin खोलें</button>
+      <p id="adminMessage" class="muted"></p>
+    </div>
+    <div id="adminArea" class="hidden">
+      <div class="section-title"><h3>मंजूरी के लिए लिस्टिंग</h3><button class="plain" id="logoutBtn">लॉगआउट</button></div>
+      <div id="pendingCards" class="cards"></div>
+      <p class="note">सुरक्षा: यह PIN HTML में दिख सकता है और असली सुरक्षा नहीं है। सार्वजनिक वेबसाइट पर इसे इस्तेमाल न करें। असली Admin Login और database rules के लिए README और supabase.sql देखें।</p>
+    </div>
+  </section>
+</main>
+<footer>Jodhpur Local • शुरुआती प्रोटोटाइप • बिजनेस जानकारी प्रकाशित करने से पहले सत्यापित करें।</footer>
+<script>
+const CATEGORIES = ["Beauty Parlour & Salon","Doctor & Clinic","School & Coaching","Hotel & Restaurant","Home Services","Electrician & Plumber","Shopping & Clothing","Other"];
+const SEED = [
+ {id:"demo1",name:"Demo Beauty Salon",category:"Beauty Parlour & Salon",area:"Ratanada, Jodhpur",phone:"9000000001",description:"यह केवल उदाहरण की लिस्टिंग है। असली बिजनेस जानकारी से बदलें।",status:"approved"},
+ {id:"demo2",name:"Demo Coaching Centre",category:"School & Coaching",area:"Sardarpura, Jodhpur",phone:"9000000002",description:"यह डेमो रिकॉर्ड है; वास्तविक संस्था नहीं।",status:"approved"}
+];
+const KEY="jodhpurLocalListingsV1";
+let adminOn=false, activeCategory="";
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));return Array.isArray(x)?x:SEED}catch(e){return SEED}}
+function save(items){localStorage.setItem(KEY,JSON.stringify(items))}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function wa(phone,name){return "https://wa.me/91"+phone+"?text="+encodeURIComponent("नमस्ते "+name+", आपकी लिस्टिंग Jodhpur Local पर मिली।")}
+function fillSelects(){
+ const cat=document.getElementById("categoryFilter"), formCat=document.getElementById("category");
+ CATEGORIES.forEach(c=>{cat.add(new Option(c,c));formCat.add(new Option(c,c))});
+ document.getElementById("chips").innerHTML='<button class="chip active" data-cat="">सभी</button>'+CATEGORIES.map(c=>`<button class="chip" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+ document.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{activeCategory=b.dataset.cat;cat.value=activeCategory;document.querySelectorAll(".chip").forEach(x=>x.classList.toggle("active",x.dataset.cat===activeCategory));render()}));
+}
+function card(b,admin=false){return `<article class="card"><span class="tag">${esc(b.category)}</span><h3>${esc(b.name)}</h3><div class="muted">📍 ${esc(b.area)}</div><p>${esc(b.description||"अधिक जानकारी के लिए WhatsApp करें।")}</p><div class="muted">📞 ${esc(b.phone)}</div>${admin?`<div class="actions"><button class="green" data-approve="${esc(b.id)}">Approve</button><button class="danger" data-delete="${esc(b.id)}">Delete</button></div>`:`<div class="actions"><a class="btn green" href="tel:${esc(b.phone)}">Call</a><a class="btn plain" target="_blank" rel="noopener" href="${wa(b.phone,b.name)}">WhatsApp</a></div>`}</article>`}
+function render(){
+ const q=document.getElementById("searchInput").value.trim().toLowerCase(), cat=document.getElementById("categoryFilter").value||activeCategory;
+ const all=load().filter(b=>b.status==="approved").filter(b=>(!cat||b.category===cat)&&(!q||[b.name,b.category,b.area,b.description].join(" ").toLowerCase().includes(q)));
+ document.getElementById("count").textContent=all.length+" बिजनेस";
+ document.getElementById("businessCards").innerHTML=all.length?all.map(b=>card(b)).join(""):'<div class="empty">कोई बिजनेस नहीं मिला। दूसरी कैटेगरी या शब्द से खोजें।</div>';
+ if(adminOn) renderPending();
+}
+function renderPending(){
+ const pending=load().filter(b=>b.status==="pending");
+ document.getElementById("pendingCards").innerHTML=pending.length?pending.map(b=>card(b,true)).join(""):'<div class="empty">अभी कोई pending listing नहीं है।</div>';
+ document.querySelectorAll("[data-approve]").forEach(btn=>btn.onclick=()=>{const items=load();const x=items.find(b=>b.id===btn.dataset.approve);if(x)x.status="approved";save(items);render()});
+ document.querySelectorAll("[data-delete]").forEach(btn=>btn.onclick=()=>{if(confirm("इस लिस्टिंग को हटाएं?")){save(load().filter(b=>b.id!==btn.dataset.delete));render()}});
+}
+document.getElementById("businessForm").addEventListener("submit",e=>{
+ e.preventDefault();const phone=document.getElementById("phone").value.trim();
+ if(!/^[0-9]{10}$/.test(phone)){document.getElementById("formMessage").textContent="कृपया सही 10 अंकों का मोबाइल नंबर डालें।";return}
+ const b={id:"b"+Date.now(),name:document.getElementById("name").value.trim(),category:document.getElementById("category").value,area:document.getElementById("area").value.trim(),phone,description:document.getElementById("description").value.trim(),status:"pending"};
+ const items=load();items.push(b);save(items);e.target.reset();document.getElementById("formMessage").textContent="धन्यवाद! आपकी लिस्टिंग सबमिट हो गई है। Admin approval के बाद दिखाई देगी।";if(adminOn)renderPending();
+});
+document.getElementById("searchBtn").onclick=render;
+document.getElementById("searchInput").addEventListener("input",render);
+document.getElementById("categoryFilter").addEventListener("change",()=>{activeCategory=document.getElementById("categoryFilter").value;document.querySelectorAll(".chip").forEach(x=>x.classList.toggle("active",x.dataset.cat===activeCategory));render()});
+document.getElementById("loginBtn").onclick=()=>{if(document.getElementById("adminPin").value==="2468"){adminOn=true;document.getElementById("adminArea").classList.remove("hidden");document.getElementById("adminLogin").classList.add("hidden");renderPending()}else document.getElementById("adminMessage").textContent="गलत PIN। फिर कोशिश करें।"};
+document.getElementById("logoutBtn").onclick=()=>{adminOn=false;document.getElementById("adminArea").classList.add("hidden");document.getElementById("adminLogin").classList.remove("hidden");document.getElementById("adminPin").value=""};
+fillSelects();render();
+</script>
+</body>
+</html>
